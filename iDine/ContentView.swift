@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    let menu = Bundle.main.decode([MenuSection].self, from: "menu.json")
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+        NavigationView {
+            List {
+                ForEach(menu) { section in
+                    Section {
+                        ForEach(section.items) { item in
+                            NavigationLink {
+                                ItemDetailView(item: item)
+                            } label: {
+                                ItemRowView(item: item)
+                            }
+                        }
+                    } header: {
+                        Text(section.name)
+                    }
+                }
+            }
+            .navigationTitle("Menu")
         }
-        .padding()
     }
 }
 
@@ -24,3 +37,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
+
